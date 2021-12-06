@@ -2,3 +2,7 @@ RewriteEngine On
 RewriteBase /~sublet1u/Interop/
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^ velo.php [QSA,L]
+
+<Files ".env">
+  Deny from all
+</Files>
