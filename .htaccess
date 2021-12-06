@@ -1,0 +1,4 @@
+RewriteEngine on  
+RewriteCond %{REQUEST_FILENAME} !-f  
+RewriteCond %{REQUEST_FILENAME} !-d  
+RewriteRule ^(.*)$ /~sublet1u/interop/index.php [L,QSA]

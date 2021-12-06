@@ -1,0 +1,10 @@
+{
+	"name": "sublett/lp_interop_projet",
+	"type": "project",
+	"require": {},
+	"autoload": {
+		"psr-4": {
+			"Biciclette\\": "php/"
+		}
+	}
+}
