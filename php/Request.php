@@ -21,13 +21,16 @@ class Request
     // Setting up proxy for production
     $context = null;
     if ($_SERVER['SERVER_NAME'] === 'webetu.iutnc.univ-lorraine.fr') {
-      $opts = array('http' => array('proxy' => 'tcp://127.0.0.1:8080', 'request_fulluri' => true));
+      $opts = array('http' => array('proxy' => 'tcp://www-cache:3128', 'request_fulluri' => true));
       $context = stream_context_create($opts);
     }
     // Fetching content
     $res = file_get_contents($url, false, $context);
     if ($res === false) {
       return null;
+    }
+    if (!str_contains($http_response_header[0], '200')) {
+      throw new \Error('Error occured on fetch (' . $url . ')');
     }
     return ['url' => $url, 'payload' => $res, 'headers' => $http_response_header];
   }

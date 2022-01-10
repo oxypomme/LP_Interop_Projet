@@ -25,10 +25,13 @@ if (strpos($_SERVER['REQUEST_URI'], '/static') === 0) {
 }
 
 // Getting info
+$meteo = null;
+$velos = null;
 try {
   $location = \Biciclette\Location::get();
   // var_dump($location);
   $meteo = \Biciclette\Meteo::get($location['latlng']);
+  $velos = \Biciclette\Velo::get();
 } catch (\Throwable $th) {
   var_dump($th->getMessage());
 }
@@ -61,6 +64,7 @@ try {
   </style>
 
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
   <!-- Style -->
   <link rel="stylesheet" href="/static/css/style.css" />
 
@@ -74,11 +78,19 @@ try {
     <div class="meteo--container">
       <?= $meteo['html'] ?>
     </div>
+    <div class="velos--container">
+      <div id="map"></div>
+    </div>
   </main>
 
   <footer></footer>
 
   <!-- JS -->
+  <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
+  <script>
+    const geoloc = <?= json_encode($location ?? null) ?>;
+    const velos = <?= json_encode($velos ? $velos['data'] : null) ?>;
+  </script>
   <script src="/static/js/index.js" defer></script>
 </body>
 

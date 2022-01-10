@@ -9,3 +9,7 @@
 .meteo--item_temperature::after {
 	content: "°C";
 }
+
+#map {
+	height: 70vh;
+}
