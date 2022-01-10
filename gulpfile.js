@@ -13,7 +13,10 @@ function reload() {
 }
 
 function watchDev() {
-	watch("**/*.php", reload);
+	watch(
+		["php/**/*.php", "php/**/*.xsl", "static/**/*.css", "static/**/*.js"],
+		reload
+	);
 }
 
 task("serve", function () {
