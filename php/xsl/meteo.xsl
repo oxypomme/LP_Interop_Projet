@@ -18,8 +18,11 @@
         <xsl:value-of select="substring(@timestamp, 11, 6)" />
       </div>
       <!-- Température -->
+      <xsl:variable name="temperature">
+          <xsl:value-of select="round(temperature/level[@val='2m'] - 273.15)"/>
+      </xsl:variable>
       <div class="meteo--item_temperature">
-        <xsl:value-of select="round(temperature/level[@val='2m'] - 273.15)" />
+        <xsl:value-of select="$temperature" />
       </div>
       <!-- Status -->
       <div class="meteo--item_status">
@@ -45,6 +48,31 @@
           </div>
         </xsl:when>
       </xsl:choose>
+      <!-- Conseils -->
+      <div class="meteo--item_neige">
+        <xsl:choose>
+          <xsl:when test="pluie > 0">
+            <xsl:choose>
+              <xsl:when test="$temperature &lt; 10">
+                Uniquement si t'a pas d'autres solutions !
+              </xsl:when>
+              <xsl:otherwise>
+                Sort la veste et prend un parapluie dans le sac.
+              </xsl:otherwise>
+            </xsl:choose>
+          </xsl:when>
+          <xsl:otherwise>
+              <xsl:choose>
+                <xsl:when test="$temperature &lt; 10">
+                  Prend un bonnet... On sait jamais...
+                </xsl:when>
+                <xsl:otherwise>
+                  Les conditions sont idéales
+                </xsl:otherwise>
+              </xsl:choose>
+            </xsl:otherwise>
+        </xsl:choose>
+      </div>
     </div>
   </xsl:template>
   <!-- Various echances -->
