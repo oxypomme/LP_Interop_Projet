@@ -14,18 +14,16 @@
   <!-- Render HTML element -->
   <xsl:template match="echeance" mode="render">
     <div>
-      <xsl:choose>
+      <xsl:attribute name="class">
+        <xsl:choose>
           <xsl:when test="number(substring(@timestamp, 12, 2)) &lt; number($time)">
-            <xsl:attribute name="class">
               <xsl:value-of select="'meteo--item item-passed'"/>
-            </xsl:attribute>
           </xsl:when>
           <xsl:otherwise>
-            <xsl:attribute name="class">
-              <xsl:value-of select="'meteo--item'"/>
-            </xsl:attribute>
+            <xsl:value-of select="'meteo--item'"/>
           </xsl:otherwise>
         </xsl:choose>
+      </xsl:attribute>
       <div class="meteo--item_time">
         <xsl:value-of select="substring(@timestamp, 6, 11)" />
       </div>
@@ -87,45 +85,39 @@
       </div>
       <!-- Humidité -->
       <div>
+        <xsl:attribute name="class">
         <xsl:choose>
-          <xsl:when test="humidite/level &gt; 75">
-            <xsl:attribute name="class">
+            <xsl:when test="humidite/level &gt; 75">
               <xsl:value-of select="'meteo--item_humid h-humid'"/>
-            </xsl:attribute>
-          </xsl:when>
-          <xsl:otherwise>
-            <xsl:attribute name="class">
+            </xsl:when>
+            <xsl:otherwise>
               <xsl:value-of select="'meteo--item_humid'"/>
-            </xsl:attribute>
-          </xsl:otherwise>
-        </xsl:choose>
+            </xsl:otherwise>
+          </xsl:choose>
+        </xsl:attribute>
         <i class="fas fa-tint"></i>
         <xsl:value-of select="humidite/level" />
       </div>
       <!-- Conseils -->
       <div class="meteo--item_advice">
-        <xsl:choose>
-          <xsl:when test="pluie > 0">
+        <i class="fas fa-info-circle">
+          <xsl:attribute name="title">
             <xsl:choose>
-              <xsl:when test="$temperature &lt; 10">
-                Uniquement si t'a pas d'autres solutions !
+              <xsl:when test="pluie > 0">
+                <xsl:choose>
+                  <xsl:when test="$temperature &lt; 20">Tu dois vraiment sortir ?</xsl:when>
+                  <xsl:otherwise>Sort la veste et prend un parapluie dans le sac.</xsl:otherwise>
+                </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
-                Sort la veste et prend un parapluie dans le sac.
-              </xsl:otherwise>
-            </xsl:choose>
-          </xsl:when>
-          <xsl:otherwise>
-              <xsl:choose>
-                <xsl:when test="$temperature &lt; 10">
-                  Prend un bonnet... On sait jamais...
-                </xsl:when>
-                <xsl:otherwise>
-                  Les conditions sont idéales
+                  <xsl:choose>
+                    <xsl:when test="$temperature &lt; 20">Prend un bonnet... On sait jamais...</xsl:when>
+                    <xsl:otherwise>Fonce !</xsl:otherwise>
+                  </xsl:choose>
                 </xsl:otherwise>
-              </xsl:choose>
-            </xsl:otherwise>
-        </xsl:choose>
+            </xsl:choose>
+          </xsl:attribute>
+        </i>
       </div>
     </div>
   </xsl:template>

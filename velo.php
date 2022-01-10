@@ -32,7 +32,7 @@ try {
   $location = \Biciclette\Location::get();
   // var_dump($location);
   $meteo = \Biciclette\Meteo::get($location['latlng']);
-  $velos = \Biciclette\Velo::get();
+  // $velos = \Biciclette\Velo::get();
 } catch (\Throwable $th) {
   var_dump($th->getMessage());
 }
@@ -75,10 +75,13 @@ try {
 <body>
   <header></header>
 
-  <main>
+  <aside>
     <div class="meteo--container">
       <?= $meteo['html'] ?>
     </div>
+  </aside>
+
+  <main>
     <div class="velos--container">
       <div id="map"></div>
     </div>

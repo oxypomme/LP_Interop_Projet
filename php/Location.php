@@ -8,6 +8,7 @@ class Location
   static function get(): array
   {
     //! WARN: Dirty, if we're behind a proxy but not in IUT it's will be wrong
+    //! BUG: Not the correct IP
     $ip = in_array(explode('.', $_SERVER['REMOTE_ADDR'])[0], ['100', '172']) ? '194.214.170.34' : $_SERVER['REMOTE_ADDR'];
     $data = (new Request("http://ip-api.com/xml/$ip", [
       'fields' => implode(',', [

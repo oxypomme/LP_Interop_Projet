@@ -1,13 +1,67 @@
+body {
+	display: grid;
+	grid-template-areas:
+		"header header"
+		"main aside"
+		"footer footer";
+}
+
+header {
+	grid-area: header;
+}
+
+main {
+	grid-area: main;
+	width: 65vw;
+}
+
+aside {
+	grid-area: aside;
+	width: 35vw;
+}
+
+footer {
+	grid-area: footer;
+}
+
+.meteo--container {
+	margin-top: -0.5rem;
+}
+
 .meteo--list {
-	display: flex;
+	display: grid;
+	grid-template-columns: 1.5fr 1fr;
+	grid-template-rows: repeat(4, 1fr);
 }
 
 .meteo--item {
-	margin-right: 1rem;
+	grid-column: 2;
+	display: grid;
+	grid-template-areas:
+		"meteo-status meteo-time meteo-time"
+		"meteo-status meteo-temp meteo-temp"
+		"meteo-info meteo-humid meteo-humid";
+	margin: 0.5rem;
+	padding: 0.5rem;
+	background-color: #d4d4d4;
+	border-radius: 5px;
 }
 
 .meteo--item.item-passed {
-	background-color: red;
+	grid-column: 1;
+	grid-row: 1;
+	grid-row-end: span 4;
+	font-size: 1.5rem;
+	background-color: silver;
+}
+
+.meteo--item_status {
+	grid-area: meteo-status;
+	min-width: 4rem;
+	font-size: 2em;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 .meteo--item_status > i.fa-sun {
@@ -20,6 +74,14 @@
 	color: white;
 	-webkit-text-stroke-width: 1px;
 	-webkit-text-stroke-color: black;
+}
+
+.meteo--item_time {
+	grid-area: meteo-time;
+}
+
+.meteo--item_temperature {
+	grid-area: meteo-temp;
 }
 
 .meteo--item_temperature.t-very-hot {
@@ -39,6 +101,10 @@
 	content: "°C";
 }
 
+.meteo--item_humid {
+	grid-area: meteo-humid;
+}
+
 .meteo--item_temperature > i,
 .meteo--item_humid > i {
 	margin-right: 0.5em;
@@ -48,6 +114,13 @@
 }
 .meteo--item_humid::after {
 	content: "%";
+}
+
+.meteo--item_advice {
+	grid-area: meteo-info;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
 #map {
