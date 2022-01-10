@@ -29,7 +29,6 @@ try {
   $location = \Biciclette\Location::get();
   // var_dump($location);
   $meteo = \Biciclette\Meteo::get($location['latlng']);
-  var_dump($meteo);
 } catch (\Throwable $th) {
   var_dump($th->getMessage());
 }
@@ -61,6 +60,7 @@ try {
     }
   </style>
 
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <!-- Style -->
   <link rel="stylesheet" href="/static/css/style.css" />
 
@@ -74,6 +74,7 @@ try {
     <div class="meteo--container">
       <?= $meteo['html'] ?>
     </div>
+  </main>
 
   <footer></footer>
 
