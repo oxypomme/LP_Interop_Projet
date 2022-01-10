@@ -1,0 +1,11 @@
+.meteo--list {
+	display: flex;
+}
+
+.meteo--item {
+	margin-right: 1rem;
+}
+
+.meteo--item_temperature::after {
+	content: "°C";
+}

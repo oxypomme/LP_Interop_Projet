@@ -14,6 +14,9 @@
   <!-- Render HTML element -->
   <xsl:template match="echeance" mode="render">
     <div class="meteo--item">
+      <div class="meteo--item_time">
+        <xsl:value-of select="substring(@timestamp, 11, 6)" />
+      </div>
       <!-- Température -->
       <div class="meteo--item_temperature">
         <xsl:value-of select="round(temperature/level[@val='2m'] - 273.15)" />
@@ -22,7 +25,7 @@
       <div class="meteo--item_status">
         <xsl:choose>
           <xsl:when test="pluie > 0">
-            <i class="fas cloud-rain"></i>
+            <i class="fas fa-cloud-rain"></i>
           </xsl:when>
           <xsl:otherwise>
             <i class="fas fa-sun"></i>
@@ -34,14 +37,6 @@
         <xsl:value-of select="humidite/level" />
         %
       </div>
-      <!-- Neige (debug) -->
-      <xsl:choose>
-        <xsl:when test="risque_neige = 'non'">
-          <div class="meteo--item_neige">
-            <i class="fas fa-snowflake"></i>
-          </div>
-        </xsl:when>
-      </xsl:choose>
       <!-- Neige -->
       <xsl:choose>
         <xsl:when test="risque_neige = 'oui'">

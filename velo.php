@@ -70,7 +70,10 @@ try {
 <body>
   <header></header>
 
-  <main></main>
+  <main>
+    <div class="meteo--container">
+      <?= $meteo['html'] ?>
+    </div>
 
   <footer></footer>
 
