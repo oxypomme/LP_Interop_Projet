@@ -25,6 +25,7 @@ if (strpos($_SERVER['REQUEST_URI'], '/static') === 0) {
 }
 
 // Getting info
+$meteo = null;
 try {
   $location = \Biciclette\Location::get();
   // var_dump($location);

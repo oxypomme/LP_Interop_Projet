@@ -14,7 +14,13 @@ function reload() {
 
 function watchDev() {
 	watch(
-		["php/**/*.php", "php/**/*.xsl", "static/**/*.css", "static/**/*.js"],
+		[
+			"velo.php",
+			"php/**/*.php",
+			"php/**/*.xsl",
+			"static/**/*.css",
+			"static/**/*.js",
+		],
 		reload
 	);
 }
