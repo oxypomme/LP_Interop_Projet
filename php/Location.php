@@ -15,8 +15,7 @@ class Location
       ]),
     ]))->fetchXML();
     if (
-      str_contains($data['headers'][0], '200')
-      && $data['payload']->xpath('status')[0]->__toString() != 'fail'
+      $data['payload']->xpath('status')[0]->__toString() != 'fail'
     ) {
       return [
         'url' => $data['url'],
