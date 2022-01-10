@@ -1,3 +1,12 @@
+// Init current day
+const items = document.querySelectorAll(".meteo--item.item-passed");
+for (let i = 0; i < items.length; i++) {
+	if (i < items.length - 1) {
+		items[i].classList.remove("item-passed");
+	}
+}
+
+// Init map
 if (geoloc) {
 	const map = L.map("map").setView(geoloc.latlng, 13);
 	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {

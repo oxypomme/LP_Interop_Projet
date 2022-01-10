@@ -1,6 +1,7 @@
 <?xml version='1.0' encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
   <xsl:param name="date" />
+  <xsl:param name="time" />
   <xsl:output method="html" encoding="UTF-8" indent="yes" />
   <xsl:strip-space elements="*" />
 
@@ -12,41 +13,94 @@
 
   <!-- Render HTML element -->
   <xsl:template match="echeance" mode="render">
-    <div class="meteo--item">
+    <div>
+      <xsl:choose>
+          <xsl:when test="number(substring(@timestamp, 12, 2)) &lt; number($time)">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item item-passed'"/>
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item'"/>
+            </xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
       <div class="meteo--item_time">
-        <xsl:value-of select="substring(@timestamp, 12, 5)" />
+        <xsl:value-of select="substring(@timestamp, 6, 11)" />
       </div>
       <!-- Température -->
       <xsl:variable name="temperature">
           <xsl:value-of select="round(temperature/level[@val='2m'] - 273.15)"/>
       </xsl:variable>
-      <div class="meteo--item_temperature">
+      <div>
+        <xsl:choose>
+          <xsl:when test="$temperature &gt; 30">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item_temperature t-very-hot'"/>
+            </xsl:attribute>
+            <i class="fas fa-thermometer-full"></i>
+          </xsl:when>
+          <xsl:when test="$temperature &gt; 20">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item_temperature t-hot'"/>
+            </xsl:attribute>
+            <i class="fas fa-thermometer-three-quarters"></i>
+          </xsl:when>
+          <xsl:when test="$temperature &gt; 10">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item_temperature'"/>
+            </xsl:attribute>
+            <i class="fas fa-thermometer-half"></i>
+          </xsl:when>
+          <xsl:when test="$temperature &gt; 0">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item_temperature t-cold'"/>
+            </xsl:attribute>
+            <i class="fas fa-thermometer-quarter"></i>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item_temperature t-very-cold'"/>
+            </xsl:attribute>
+            <i class="fas fa-thermometer-empty"></i>
+          </xsl:otherwise>
+        </xsl:choose>
         <xsl:value-of select="$temperature" />
       </div>
       <!-- Status -->
       <div class="meteo--item_status">
         <xsl:choose>
-          <xsl:when test="pluie > 0">
+          <xsl:when test="pluie &gt; 0">
             <i class="fas fa-cloud-rain"></i>
           </xsl:when>
           <xsl:otherwise>
             <i class="fas fa-sun"></i>
           </xsl:otherwise>
         </xsl:choose>
-      </div>
-      <!-- Neige -->
-      <xsl:choose>
-        <xsl:when test="risque_neige = 'oui'">
-          <div class="meteo--item_neige">
+        <!-- Neige -->
+        <xsl:choose>
+          <xsl:when test="risque_neige = 'oui'">
             <i class="fas fa-snowflake"></i>
-          </div>
-        </xsl:when>
-      </xsl:choose>
+          </xsl:when>
+        </xsl:choose>
+      </div>
       <!-- Humidité -->
-      <div class="meteo--item_humid">
+      <div>
+        <xsl:choose>
+          <xsl:when test="humidite/level &gt; 75">
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item_humid h-humid'"/>
+            </xsl:attribute>
+          </xsl:when>
+          <xsl:otherwise>
+            <xsl:attribute name="class">
+              <xsl:value-of select="'meteo--item_humid'"/>
+            </xsl:attribute>
+          </xsl:otherwise>
+        </xsl:choose>
         <i class="fas fa-tint"></i>
         <xsl:value-of select="humidite/level" />
-        %
       </div>
       <!-- Conseils -->
       <div class="meteo--item_advice">
