@@ -27,6 +27,7 @@ class Meteo
 
     $xsl = new \XSLTProcessor();
     $xsl->setParameter('', 'date', date('Y-m-d'));
+    $xsl->setParameter('', 'time', date('H'));
     $xsl->importStyleSheet($xsldoc);
     $frag = $xsl->transformToXML($xmldoc);
 

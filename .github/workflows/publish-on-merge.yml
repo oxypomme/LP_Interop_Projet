@@ -19,6 +19,7 @@ jobs:
           password: ${{ secrets.PASSWORD }}
           script: |
             cd www/Interop
+            git reset --hard
             git pull
             composer install --no-dev
 
