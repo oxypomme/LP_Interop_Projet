@@ -38,18 +38,16 @@ class Location
   static function getJSON(): array
   {
     $data = self::createRequest('json')->fetchJSON();
-    if ($data['payload']['status'] != 'fail') {
+    if ($data['payload']->status != 'fail') {
       return [
         'url' => $data['url'],
-        'country' => $data['payload']['country'],
-        'city' => $data['payload']['city'],
-        'zip' => $data['payload']['zip'],
-        'latlng' => [$data['payload']['lat'], $data['payload']['lon']]
+        'country' => $data['payload']->country,
+        'city' => $data['payload']->city,
+        'zip' => $data['payload']->zip,
+        'latlng' => [$data['payload']->lat, $data['payload']->lon]
       ];
     } else {
       throw new \Error('Error occured on ip fetch (' . $data['url'] . ')');
     }
   }
 }
-
-// var_dump($obj);

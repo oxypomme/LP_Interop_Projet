@@ -36,5 +36,3 @@ class Velo
     return ['url' => $data['url'], 'data' => $stations];
   }
 }
-
-// var_dump($obj);

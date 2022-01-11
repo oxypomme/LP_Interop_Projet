@@ -16,7 +16,17 @@ class Request
   function fetch(): ?array
   {
     // Parsing query
-    $gparams = implode('&', array_map(fn (string $key, string $value) => "$key=$value", array_keys($this->query), $this->query));
+    $gparams = implode(
+      '&',
+      array_map(
+        fn (string $key, ?string $value) =>
+        $value && trim($value) ?
+          "$key=" . preg_replace('/\s/', '+', $value) :
+          '',
+        array_keys($this->query),
+        $this->query
+      )
+    );
     $url = $this->url . (count($this->query) > 0 ? "?$gparams" : '');
     // Setting up proxy for production
     $context = null;
