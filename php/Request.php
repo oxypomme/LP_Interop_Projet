@@ -45,6 +45,13 @@ class Request
     return ['url' => $url, 'payload' => $res, 'headers' => $http_response_header];
   }
 
+  function fetchCSV(): ?array
+  {
+    $data = $this->fetch();
+    //TODO: CSV to JSON
+    return $data;
+  }
+
   function fetchJSON(): ?array
   {
     $data = $this->fetch();

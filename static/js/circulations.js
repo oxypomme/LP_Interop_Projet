@@ -8,4 +8,14 @@ if (ndlLatLng) {
 	const ndlMarker = L.marker(ndlLatLng).addTo(map);
 	ndlMarker.bindPopup("Mairie de Notre-Dame-des-Landes").openPopup();
 	L.DomUtil.addClass(ndlMarker._icon, "map--center");
+
+	if (infos) {
+		for (const info of infos) {
+			L.marker(info.latlng).addTo(map).bindPopup(`
+          ${info.location}<br/>
+          ${info.nature}<br/>
+          ${info.type}<br/>
+          ${info.duration}<br/>`);
+		}
+	}
 }

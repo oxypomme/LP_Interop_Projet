@@ -4,12 +4,17 @@ require_once __DIR__ . '/vendor/autoload.php';
 
 // Getting info
 $latlng = null;
+$infos = null;
 $messages = [];
 try {
-  // $location = \Biciclette\Location::getJSON();
   $latlng = \Biciclette\Address::get('mairie Notre-Dame-des-Landes', 44130);
 } catch (\Throwable $th) {
   $messages[] = genErrorMessage('AddressError', $th);
+}
+try {
+  $infos = \Biciclette\Roads::get();
+} catch (\Throwable $th) {
+  $messages[] = genErrorMessage('RoadError', $th);
 }
 
 ?>
@@ -69,6 +74,7 @@ try {
   <!-- JS -->
   <script>
     const ndlLatLng = <?= json_encode($latlng ? $latlng['data'] : null) ?>;
+    const infos = <?= json_encode($infos ? $infos['data'] : null) ?>;
   </script>
   <script src="./static/js/circulations.js" defer></script>
 </body>
