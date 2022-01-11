@@ -36,15 +36,26 @@ if (preg_match('/\/circulations(\.php)?/', $_SERVER['REQUEST_URI'])) {
 }
 
 // Getting info
+$location = null;
 $meteo = null;
 $velos = null;
 $messages = [];
 try {
-  $location = \Biciclette\Location::get();
-  $meteo = \Biciclette\Meteo::get($location['latlng']);
-  $velos = \Biciclette\Velo::get();
+  $location = \Biciclette\Location::getXML();
 } catch (\Throwable $th) {
-  $messages[] = ['type' => 'error', 'message' => $th->getMessage()];
+  $messages[] = ['type' => 'error', 'message' => 'LocationError: ' . $th->getMessage()];
+}
+if ($location) {
+  try {
+    $meteo = \Biciclette\Meteo::get($location['latlng']);
+  } catch (\Throwable $th) {
+    $messages[] = ['type' => 'error', 'message' => 'MeteoError: ' . $th->getMessage()];
+  }
+  try {
+    $velos = \Biciclette\Velo::get();
+  } catch (\Throwable $th) {
+    $messages[] = ['type' => 'error', 'message' => 'VeloError: ' . $th->getMessage()];
+  }
 }
 
 

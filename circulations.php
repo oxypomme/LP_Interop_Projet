@@ -1,4 +1,17 @@
 <?php
+
+require_once __DIR__ . '/vendor/autoload.php';
+require_once __DIR__ . '/php/Location.php';
+
+// Getting info
+$location = null;
+$messages = [];
+try {
+  $location = \Biciclette\Location::getJSON();
+} catch (\Throwable $th) {
+  $messages[] = ['type' => 'error', 'message' => 'LocationError: ' . $th->getMessage()];
+}
+
 ?>
 
 <!DOCTYPE html>
