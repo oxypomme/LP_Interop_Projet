@@ -3,6 +3,11 @@
 require_once __DIR__ . '/vendor/autoload.php';
 require_once __DIR__ . '/php/Location.php';
 
+// Disable warning on prod
+if ($_SERVER['SERVER_NAME'] === 'webetu.iutnc.univ-lorraine.fr') {
+  error_reporting(E_ERROR);
+}
+
 // Serving static files
 $staticPos = strpos($_SERVER['REQUEST_URI'], '/static');
 if ($staticPos !== false && $staticPos <= 1) {
@@ -28,13 +33,13 @@ if ($staticPos !== false && $staticPos <= 1) {
 // Getting info
 $meteo = null;
 $velos = null;
+$messages = [];
 try {
   $location = \Biciclette\Location::get();
-  // var_dump($location);
   $meteo = \Biciclette\Meteo::get($location['latlng']);
-  // $velos = \Biciclette\Velo::get();
+  $velos = \Biciclette\Velo::get();
 } catch (\Throwable $th) {
-  var_dump($th->getMessage());
+  $messages[] = ['type' => 'error', 'message' => $th->getMessage()];
 }
 
 
@@ -73,11 +78,20 @@ try {
 </head>
 
 <body>
-  <header></header>
+  <header>
+    <h1>♬ A bicyclette ♪</h1>
+    <?php if (count($messages) > 0) : ?>
+      <?php foreach ($messages as $message) : ?>
+        <div class="message message--<?= $message['type'] ?>">
+          <?= $message['message'] ?>
+        </div>
+      <?php endforeach; ?>
+    <?php endif; ?>
+  </header>
 
   <aside>
     <div class="meteo--container">
-      <?= $meteo['html'] ?>
+      <?= $meteo ? $meteo['html'] : '' ?>
     </div>
   </aside>
 
@@ -87,7 +101,9 @@ try {
     </div>
   </main>
 
-  <footer></footer>
+  <footer>
+    <p>SUBLET Tom - LP CIASIE 2021-2022 - LP2</p>
+  </footer>
 
   <!-- JS -->
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
