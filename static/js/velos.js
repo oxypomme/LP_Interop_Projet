@@ -13,7 +13,11 @@ if (geoloc) {
 		attribution:
 			'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 	}).addTo(map);
-	L.marker(geoloc.latlng).addTo(map).bindPopup("Position actuelle").openPopup();
+
+	const actMarker = L.marker(geoloc.latlng).addTo(map);
+	actMarker.bindPopup("Position actuelle").openPopup();
+	L.DomUtil.addClass(actMarker._icon, "map--center");
+
 	if (velos) {
 		for (const velo of velos) {
 			L.marker(velo.latlng).addTo(map).bindPopup(`

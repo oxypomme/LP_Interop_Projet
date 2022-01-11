@@ -16,7 +16,7 @@ class Address
     if (count($data['payload']->features) > 0) {
       return [
         'url' => $data['url'], 'data' =>
-        $data['payload']->features[0]->geometry->coordinates
+        array_reverse($data['payload']->features[0]->geometry->coordinates)
       ];
     } else {
       throw new \Error('No address found (' . $data['url'] . ')');

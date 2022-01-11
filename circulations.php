@@ -59,7 +59,9 @@ try {
     <?php endif; ?>
   </header>
 
-  <main></main>
+  <main>
+    <div id="map"></div>
+  </main>
 
   <footer></footer>
 

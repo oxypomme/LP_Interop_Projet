@@ -56,3 +56,7 @@ footer {
 .message--error::before {
 	content: "\f06a";
 }
+
+.map--center {
+	filter: hue-rotate(45deg);
+}
