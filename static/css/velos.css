@@ -102,6 +102,21 @@
 	justify-content: center;
 }
 
+.air--container {
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	margin: 0.5rem;
+	padding: 0.5rem;
+	background-color: #d4d4d4;
+	border-radius: 5px;
+}
+
+.air--container > span {
+	margin-left: 0.25rem;
+	text-shadow: 0 0 5px white;
+}
+
 .velos--container,
 #map {
 	height: 100%;

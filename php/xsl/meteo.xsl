@@ -100,7 +100,7 @@
       </div>
       <!-- Conseils -->
       <div class="meteo--item_advice">
-        <i class="fas fa-info-circle">
+        <i class="far fa-lightbulb">
           <xsl:attribute name="title">
             <xsl:choose>
               <xsl:when test="pluie > 0">
