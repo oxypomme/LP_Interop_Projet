@@ -46,7 +46,7 @@ if (covid) {
 	new Chart(document.getElementById("graph-tx_incid"), {
 		type: "line",
 		options: {
-			...config("Taux d'incidence (30 derniers jours)"),
+			...config("Taux d'incidence"),
 			scales: {
 				y: {
 					min: 0,
@@ -62,6 +62,10 @@ if (covid) {
 					backgroundColor: "rgb(0, 125, 255)",
 					borderColor: "rgb(0, 125, 255)",
 				},
+				{
+					label: "Seuil d'alerte",
+					data: datasets.date.map(() => 50),
+				},
 			],
 		},
 	});
@@ -70,9 +74,7 @@ if (covid) {
 	new Chart(document.getElementById("graph-hosp"), {
 		type: "line",
 		options: {
-			...config(
-				"Nombres d'hospitalisations et de réaimations (30 derniers jours)"
-			),
+			...config("Nombres d'hospitalisations et de réaimations"),
 		},
 		data: {
 			labels: datasets.date,

@@ -13,10 +13,6 @@ class Covid
     foreach ($data['payload']() as $row) {
       if (
         $row['dep'] == $dep
-        // Limit to past month (+ 1 day because we don't have today's data)
-        && \DateTime::createFromFormat('Y-m-d', $row['date']) >= (new \DateTime())->sub(
-          \DateInterval::createFromDateString('1 month + 1 day')
-        )
       ) {
         $res[] = [
           'date' => $row['date'],
