@@ -70,13 +70,11 @@ if ($location) {
 <body>
   <header>
     <h1>Circulations</h1>
-    <?php if (count($messages) > 0) : ?>
-      <?php foreach ($messages as $message) : ?>
-        <div class="message message--<?= $message['type'] ?>">
-          <?= $message['message'] ?>
-        </div>
-      <?php endforeach; ?>
-    <?php endif; ?>
+    <?php foreach ($messages as $message) : ?>
+      <div class="message message--<?= $message['type'] ?>">
+        <?= $message['message'] ?>
+      </div>
+    <?php endforeach; ?>
   </header>
 
   <aside>
@@ -92,6 +90,15 @@ if ($location) {
 
   <footer>
     <p>SUBLET Tom - LP CIASIE 2021-2022 - LP2</p>
+    <ul class="fetch-history">
+      <?php foreach (\Biciclette\Request::$history as $url) : ?>
+        <li>
+          <a href="<?= $url ?>">
+            <?= preg_replace('/(https?:\/\/.*?\/).*/i', '$1', $url) ?>
+          </a>
+        </li>
+      <?php endforeach; ?>
+    </ul>
   </footer>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js" integrity="sha256-Y26AMvaIfrZ1EQU49pf6H4QzVTrOI8m9wQYKkftBt4s=" crossorigin="anonymous"></script>

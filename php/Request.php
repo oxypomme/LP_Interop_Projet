@@ -4,15 +4,19 @@ namespace Biciclette;
 
 class Request
 {
+  public static array $history = [];
+
   private string $url;
   private array $query = [];
   private bool|string $cache = false;
+  private bool $skipHistory = false;
 
-  function __construct(string $url, array $query = [], bool|string $cache = false)
+  function __construct(string $url, array $query = [], bool|string $cache = false, bool $skipHistory = false)
   {
     $this->url = $url;
     $this->query = $query;
     $this->cache = $cache;
+    $this->skipHistory = $skipHistory;
   }
 
   function fetch(): ?array
@@ -57,6 +61,10 @@ class Request
     if ($_SERVER['SERVER_NAME'] === 'webetu.iutnc.univ-lorraine.fr') {
       $opts = array('http' => array('proxy' => 'tcp://www-cache:3128', 'request_fulluri' => true));
       $context = stream_context_create($opts);
+    }
+    // Adding url to history
+    if (!$this->skipHistory) {
+      self::$history[] = $url;
     }
     // Fetching content
     $res = file_get_contents($url, false, $context);

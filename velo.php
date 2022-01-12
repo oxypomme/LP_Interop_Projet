@@ -88,6 +88,15 @@ if ($location) {
 
   <footer>
     <p>SUBLET Tom - LP CIASIE 2021-2022 - LP2</p>
+    <ul class="fetch-history">
+      <?php foreach (\Biciclette\Request::$history as $url) : ?>
+        <li>
+          <a href="<?= $url ?>">
+            <?= preg_replace('/(https?:\/\/.*?\/).*/i', '$1', $url) ?>
+          </a>
+        </li>
+      <?php endforeach; ?>
+    </ul>
   </footer>
 
   <!-- JS -->
