@@ -1,6 +1,6 @@
 // Init map
 if (ndlLatLng) {
-	const map = L.map("map").setView(ndlLatLng, 13);
+	const map = L.map("map").setView(ndlLatLng, 10);
 	L.tileLayer("http://{s}.tile.osm.org/{z}/{x}/{y}.png", {
 		attribution:
 			'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
@@ -71,7 +71,7 @@ if (covid) {
 		type: "line",
 		options: {
 			...config(
-				"Nombres d'hospitalisations, de réaimations et de décès (30 derniers jours)"
+				"Nombres d'hospitalisations et de réaimations (30 derniers jours)"
 			),
 		},
 		data: {

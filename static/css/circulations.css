@@ -1,3 +1,16 @@
+.covid--container {
+	display: flex;
+	justify-content: center;
+	width: 100vw;
+	height: 40vh;
+}
+
+.covid--container > * {
+	max-width: 40%;
+	max-height: 100%;
+}
+
 #map {
-	height: 50vh;
+	height: 35vh;
+	width: 100vw;
 }

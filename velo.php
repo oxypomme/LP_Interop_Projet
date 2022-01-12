@@ -87,7 +87,9 @@ if ($location) {
   </main>
 
   <footer>
-    <p>SUBLET Tom - LP CIASIE 2021-2022 - LP2</p>
+    <p>
+      SUBLET Tom - LP CIASIE 2021-2022 - LP2
+    </p>
     <ul class="fetch-history">
       <?php foreach (\Biciclette\Request::$history as $url) : ?>
         <li>

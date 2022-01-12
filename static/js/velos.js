@@ -18,6 +18,10 @@ if (geoloc) {
 	actMarker.bindPopup("Position actuelle").openPopup();
 	L.DomUtil.addClass(actMarker._icon, "map--center");
 
+	const iutMarker = L.marker([48.68287641100645, 6.161284933811825]).addTo(map);
+	iutMarker.bindPopup("IUT Nancy Charlemagne");
+	L.DomUtil.addClass(iutMarker._icon, "map--iut");
+
 	if (velos) {
 		for (const velo of velos) {
 			L.marker(velo.latlng).addTo(map).bindPopup(`

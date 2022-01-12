@@ -77,14 +77,11 @@ if ($location) {
     <?php endforeach; ?>
   </header>
 
-  <aside>
-    <div class="covid--container">
-      <canvas width="400" height="400" id="graph-tx_incid"></canvas>
-      <canvas width="400" height="400" id="graph-hosp"></canvas>
-    </div>
-  </aside>
-
   <main>
+    <div class="covid--container">
+      <canvas id="graph-tx_incid"></canvas>
+      <canvas id="graph-hosp"></canvas>
+    </div>
     <div id="map"></div>
   </main>
 
