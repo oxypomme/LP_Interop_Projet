@@ -17,7 +17,7 @@ class Velo
       $attrs = current($marker->attributes());
       if ($attrs['open'] == '1') {
         try {
-          $detailsData = (new Request('http://www.velostanlib.fr/service/stationdetails/nancy/' . $attrs["number"]))->fetchXML();
+          $detailsData = (new Request('http://www.velostanlib.fr/service/stationdetails/nancy/' . $attrs["number"], [], false, true))->fetchXML();
 
           $stations[] = [
             'id' => $attrs["number"],
@@ -36,5 +36,3 @@ class Velo
     return ['url' => $data['url'], 'data' => $stations];
   }
 }
-
-// var_dump($obj);

@@ -1,50 +1,29 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
-require_once __DIR__ . '/php/Location.php';
-
-// Disable warning on prod
-if ($_SERVER['SERVER_NAME'] === 'webetu.iutnc.univ-lorraine.fr') {
-  error_reporting(E_ERROR);
-}
-
-// Serving static files
-$staticPos = strpos($_SERVER['REQUEST_URI'], '/static');
-if ($staticPos !== false && $staticPos <= 1) {
-  $matches = [];
-  preg_match('/.*\.(.*)$/', $_SERVER['REQUEST_URI'], $matches);
-  $type = 'text/plain';
-  switch ($matches[1]) {
-    case 'css':
-      $type = 'text/css';
-      break;
-    case 'mjs':
-    case 'js':
-      $type = 'application/javascript';
-      break;
-
-    default:
-      break;
-  }
-  header('Content-Type: ' . $type);
-  exit(file_get_contents(__DIR__ . $_SERVER['REQUEST_URI']));
-}
-
-// Routing
-if (preg_match('/\/circulations(\.php)?/', $_SERVER['REQUEST_URI'])) {
-  return require './circulations.php';
-}
+// In case of this script is called standalon
+require_once __DIR__ . '/index.php';
 
 // Getting info
+$location = null;
 $meteo = null;
 $velos = null;
 $messages = [];
 try {
-  $location = \Biciclette\Location::get();
-  $meteo = \Biciclette\Meteo::get($location['latlng']);
-  $velos = \Biciclette\Velo::get();
+  $location = \Biciclette\Location::getXML();
 } catch (\Throwable $th) {
-  $messages[] = ['type' => 'error', 'message' => $th->getMessage()];
+  $messages[] = genErrorMessage('LocationError', $th);
+}
+if ($location) {
+  try {
+    $meteo = \Biciclette\Meteo::get($location['latlng']);
+  } catch (\Throwable $th) {
+    $messages[] = genErrorMessage('MeteoError', $th);
+  }
+  try {
+    $velos = \Biciclette\Velo::get();
+  } catch (\Throwable $th) {
+    $messages[] = genErrorMessage('VeloError', $th);
+  }
 }
 
 
@@ -77,6 +56,7 @@ try {
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" integrity="sha512-1ycn6IcaQQ40/MKBW2W4Rhis/DbILU74C1vSrLJxCq57o941Ym01SwNsOMqvEBFlcgUa6xLiPY/NS5R+E6ztJQ==" crossorigin="anonymous" referrerpolicy="no-referrer" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" integrity="sha512-xodZBNTC5n17Xt2atTPuE1HxjVMSvLVW9ocqUKLsCC5CXdbqCmblAshOMAS6/keqq/sMZMZ19scR4PsZChSR7A==" crossorigin="" />
   <!-- Style -->
+  <link rel="stylesheet" href="./static/css/index.css" />
   <link rel="stylesheet" href="./static/css/velos.css" />
 
   <meta name="viewport" content="initial-scale=1" />
@@ -107,7 +87,18 @@ try {
   </main>
 
   <footer>
-    <p>SUBLET Tom - LP CIASIE 2021-2022 - LP2</p>
+    <p>
+      SUBLET Tom - LP CIASIE 2021-2022 - LP2
+    </p>
+    <ul class="fetch-history">
+      <?php foreach (\Biciclette\Request::$history as $url) : ?>
+        <li>
+          <a href="<?= $url ?>">
+            <?= preg_replace('/(https?:\/\/.*?\/).*/i', '$1', $url) ?>
+          </a>
+        </li>
+      <?php endforeach; ?>
+    </ul>
   </footer>
 
   <!-- JS -->

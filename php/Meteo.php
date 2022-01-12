@@ -34,5 +34,3 @@ class Meteo
     return ['url' => $data['url'], 'html' => $frag];
   }
 }
-
-// var_dump($obj);

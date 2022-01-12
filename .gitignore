@@ -1,2 +1,5 @@
 /vendor/
 /node_modules/
+/cache/*
+!/cache/.gitkeep
+.DS_Store

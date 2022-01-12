@@ -16,6 +16,7 @@ function watchDev() {
 	watch(
 		[
 			"velo.php",
+			"circulations.php",
 			"php/**/*.php",
 			"php/**/*.xsl",
 			"static/**/*.css",

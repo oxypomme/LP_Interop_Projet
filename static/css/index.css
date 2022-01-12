@@ -1,0 +1,62 @@
+body {
+	display: grid;
+	grid-template-areas:
+		"header header"
+		"main aside"
+		"footer footer";
+}
+
+header {
+	grid-area: header;
+	text-align: center;
+}
+
+main {
+	grid-area: main;
+	width: 65vw;
+}
+
+aside {
+	grid-area: aside;
+	width: 35vw;
+}
+
+footer {
+	grid-area: footer;
+}
+
+.message {
+	--msg-color: 192, 192, 192;
+	background: rgb(var(--msg-color), 0.5);
+	width: 50%;
+	margin: auto;
+	padding: 1rem;
+	border-radius: 5px;
+}
+.message::before {
+	font-family: "Font Awesome 5 Free";
+	font-weight: 900;
+	color: rgb(var(--msg-color));
+}
+.message--info {
+	--msg-color: 0, 125, 255;
+}
+.message--info::before {
+	content: "\f05a";
+}
+.message--warn {
+	--msg-color: 255, 165, 0;
+}
+.message--warn::before {
+	content: "\f071";
+}
+.message--error {
+	--msg-color: 190, 0, 0;
+}
+.message--error::before {
+	content: "\f06a";
+}
+
+.map--center {
+	filter: hue-rotate(45deg);
+}
