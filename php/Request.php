@@ -21,28 +21,6 @@ class Request
 
   function fetch(): ?array
   {
-    // Cecking cache
-    if ($this->cache) {
-      $matches = [];
-      preg_match('/.*\/(.*)\.?.*$/', $this->url, $matches);
-      if (count($matches) <= 1) {
-        throw new \Error('No suitable filename found for cache');
-      }
-      $filename = $matches[1];
-
-      $path = __DIR__ . "/../cache/{$filename}.json";
-      if (file_exists($path)) {
-        $data = json_decode(file_get_contents($path), true);
-        // If data is not too old (1 day)
-        if (
-          \DateTime::createFromFormat('c', $data['date_created'])
-          < (new \DateTime())->add(\DateInterval::createFromDateString(gettype($this->cache) === 'boolean' ? '1 day' : $this->cache))
-        ) {
-          return $data;
-        }
-      }
-    }
-
     // Parsing query
     $gparams = implode(
       '&',
@@ -66,6 +44,29 @@ class Request
     if (!$this->skipHistory) {
       self::$history[] = $url;
     }
+
+    // Cecking cache
+    if ($this->cache) {
+      $matches = [];
+      preg_match('/.*\/(.*)\.?.*$/', $this->url, $matches);
+      if (count($matches) <= 1) {
+        throw new \Error('No suitable filename found for cache');
+      }
+      $filename = $matches[1];
+
+      $path = __DIR__ . "/../cache/{$filename}.json";
+      if (file_exists($path)) {
+        $data = json_decode(file_get_contents($path), true);
+        // If data is not too old (1 day)
+        if (
+          \DateTime::createFromFormat('c', $data['date_created'])
+          < (new \DateTime())->add(\DateInterval::createFromDateString(gettype($this->cache) === 'boolean' ? '1 day' : $this->cache))
+        ) {
+          return $data;
+        }
+      }
+    }
+
     // Fetching content
     $res = file_get_contents($url, false, $context);
     if ($res === false) {
