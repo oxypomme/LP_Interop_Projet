@@ -1,5 +1,8 @@
 <?php
 
+// In case of this script is called standalon
+require_once __DIR__ . '/index.php';
+
 // Getting info
 $location = null;
 $meteo = null;

@@ -1,10 +1,13 @@
 <?php
 
-require_once __DIR__ . '/vendor/autoload.php';
+// In case of this script is called standalone
+require_once __DIR__ . '/index.php';
 
 // Getting info
+$location = null;
 $latlng = null;
 $infos = null;
+$covid = null;
 $messages = [];
 try {
   $latlng = \Biciclette\Address::get('mairie Notre-Dame-des-Landes', 44130);
@@ -15,6 +18,18 @@ try {
   $infos = \Biciclette\Roads::get();
 } catch (\Throwable $th) {
   $messages[] = genErrorMessage('RoadError', $th);
+}
+try {
+  $location = \Biciclette\Location::getJSON();
+} catch (\Throwable $th) {
+  $messages[] = genErrorMessage('LocationError', $th);
+}
+if ($location) {
+  try {
+    $covid = \Biciclette\Covid::get($location['zip']);
+  } catch (\Throwable $th) {
+    $messages[] = genErrorMessage('CovidError', $th);
+  }
 }
 
 ?>
@@ -64,17 +79,28 @@ try {
     <?php endif; ?>
   </header>
 
+  <aside>
+    <div class="covid--container">
+      <canvas width="400" height="400" id="graph-tx_incid"></canvas>
+      <canvas width="400" height="400" id="graph-hosp"></canvas>
+    </div>
+  </aside>
+
   <main>
     <div id="map"></div>
   </main>
 
-  <footer></footer>
+  <footer>
+    <p>SUBLET Tom - LP CIASIE 2021-2022 - LP2</p>
+  </footer>
 
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@3.7.0/dist/chart.min.js" integrity="sha256-Y26AMvaIfrZ1EQU49pf6H4QzVTrOI8m9wQYKkftBt4s=" crossorigin="anonymous"></script>
   <script src="https://unpkg.com/leaflet@1.7.1/dist/leaflet.js" integrity="sha512-XQoYMqMTK8LvdxXYG3nZ448hOEQiglfqkJs1NOQV44cWnUrBc8PkAOcXy20w0vlaXaVUearIOBhiXZ5V3ynxwA==" crossorigin=""></script>
   <!-- JS -->
   <script>
     const ndlLatLng = <?= json_encode($latlng ? $latlng['data'] : null) ?>;
     const infos = <?= json_encode($infos ? $infos['data'] : null) ?>;
+    const covid = <?= json_encode($covid ? $covid['data'] : null) ?>;
   </script>
   <script src="./static/js/circulations.js" defer></script>
 </body>

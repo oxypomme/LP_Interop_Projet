@@ -14,7 +14,7 @@ function genErrorMessage(string $name, Throwable &$th): array
   if ($_SERVER['SERVER_NAME'] !== 'webetu.iutnc.univ-lorraine.fr') {
     $msg .= ' -> <b>' . $th->getFile() . ':' . $th->getLine() . '</b>';
   }
-  return ['type' => 'error', 'message' => 'LocationError: ' . $msg];
+  return ['type' => 'error', 'message' => $msg];
 }
 
 $uriMatch = fn (string $route) => preg_match("/\/$route(\.php|\/)?/", $_SERVER['REQUEST_URI']);

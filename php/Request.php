@@ -6,15 +6,39 @@ class Request
 {
   private string $url;
   private array $query = [];
+  private bool|string $cache = false;
 
-  function __construct(string $url, array $query = [])
+  function __construct(string $url, array $query = [], bool|string $cache = false)
   {
     $this->url = $url;
     $this->query = $query;
+    $this->cache = $cache;
   }
 
   function fetch(): ?array
   {
+    // Cecking cache
+    if ($this->cache) {
+      $matches = [];
+      preg_match('/.*\/(.*)\.?.*$/', $this->url, $matches);
+      if (count($matches) <= 1) {
+        throw new \Error('No suitable filename found for cache');
+      }
+      $filename = $matches[1];
+
+      $path = __DIR__ . "/../cache/{$filename}.json";
+      if (file_exists($path)) {
+        $data = json_decode(file_get_contents($path), true);
+        // If data is not too old (1 day)
+        if (
+          \DateTime::createFromFormat('c', $data['date_created'])
+          < (new \DateTime())->add(\DateInterval::createFromDateString(gettype($this->cache) === 'boolean' ? '1 day' : $this->cache))
+        ) {
+          return $data;
+        }
+      }
+    }
+
     // Parsing query
     $gparams = implode(
       '&',
@@ -39,16 +63,59 @@ class Request
     if ($res === false) {
       return null;
     }
-    if (!str_contains($http_response_header[0], '200')) {
+    if (
+      !str_contains($http_response_header[0], '200')
+      && !str_contains($http_response_header[0], '302')
+    ) {
       throw new \Error('Error occured on fetch (' . $url . ')');
     }
-    return ['url' => $url, 'payload' => $res, 'headers' => $http_response_header];
+    $data = ['url' => $url, 'payload' => $res, 'headers' => $http_response_header];
+
+    // Writing to cache
+    if ($this->cache) {
+      $data = array_merge(
+        $data,
+        [
+          'date_created' => date('c')
+        ]
+      );
+      file_put_contents($path, json_encode($data));
+    }
+    return $data;
   }
 
-  function fetchCSV(): ?array
+  /**
+   * Fetch data and transform it as a associative array.
+   * 
+   * In this particuliar case, `payload` is a generator function who yields each 
+   * line as a associative array.
+   * First line of CSV is considered as column names (and so as keys).
+   * Works this way becausee we need to treat big files (> 5Mo).
+   * 
+   * @param string $separator Separator between columns. `,` by default.
+   * @param string $EOL Separator between lines. `\n` by default.
+   * 
+   * @return null|array Fetched data.
+   */
+  function fetchCSV(string $separator = ',', string $EOL = PHP_EOL): ?array
   {
     $data = $this->fetch();
-    //TODO: CSV to JSON
+    if ($data['payload']) {
+      // Split betwen lines
+      $lines = explode($EOL, $data['payload']);
+      $labels = explode($separator, $lines[0]);
+      $data['payload'] = function () use ($separator, &$lines, &$labels) {
+        for ($j = 1; $j < count($lines); $j++) {
+          $cells = explode($separator, $lines[$j]);
+
+          $obj = [];
+          for ($i = 0; $i < count($cells); $i++) {
+            $obj[$labels[$i] ?? $i] = $cells[$i];
+          }
+          yield $obj;
+        }
+      };
+    }
     return $data;
   }
 
