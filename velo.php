@@ -6,6 +6,7 @@ require_once __DIR__ . '/index.php';
 // Getting info
 $location = null;
 $meteo = null;
+$air = null;
 $velos = null;
 $messages = [];
 try {
@@ -18,6 +19,11 @@ if ($location) {
     $meteo = \Biciclette\Meteo::get($location['latlng']);
   } catch (\Throwable $th) {
     $messages[] = genErrorMessage('MeteoError', $th);
+  }
+  try {
+    $air = \Biciclette\Air::get($location['city'])['data'];
+  } catch (\Throwable $th) {
+    $messages[] = genErrorMessage('AirError', $th);
   }
   try {
     $velos = \Biciclette\Velo::get();
@@ -65,18 +71,25 @@ if ($location) {
 <body>
   <header>
     <h1>♬ A bicyclette ♪</h1>
-    <?php if (count($messages) > 0) : ?>
-      <?php foreach ($messages as $message) : ?>
-        <div class="message message--<?= $message['type'] ?>">
-          <?= $message['message'] ?>
-        </div>
-      <?php endforeach; ?>
-    <?php endif; ?>
+    <?php foreach ($messages as $message) : ?>
+      <div class="message message--<?= $message['type'] ?>">
+        <?= $message['message'] ?>
+      </div>
+    <?php endforeach; ?>
   </header>
 
   <aside>
     <div class="meteo--container">
       <?= $meteo ? $meteo['html'] : '' ?>
+    </div>
+    <div class="air--container">
+      Qualité de l'air :
+      <span style="color: <?= $air['color'] ?? 'inherit' ?>;">
+        <?= $air['label'] ?>
+        <?php if ($air['hint']) : ?>
+          <i class="far fa-lightbulb" title="<?= $air['hint'] ?>"></i>
+        <?php endif; ?>
+      </span>
     </div>
   </aside>
 
