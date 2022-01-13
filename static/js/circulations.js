@@ -46,7 +46,7 @@ if (covid) {
 	new Chart(document.getElementById("graph-tx_incid"), {
 		type: "line",
 		options: {
-			...config("Taux d'incidence"),
+			...config("Taux d'incidence (pour 100 000 habitants)"),
 			scales: {
 				y: {
 					min: 0,
@@ -90,6 +90,12 @@ if (covid) {
 					data: datasets.rea,
 					backgroundColor: "rgb(255, 0, 125)",
 					borderColor: "rgb(255, 0, 125)",
+				},
+				{
+					label: "Nombre de morts (24h)",
+					data: datasets.incid_dchosp,
+					backgroundColor: "rgb(0, 255, 125)",
+					borderColor: "rgb(0, 255, 125)",
 				},
 			],
 		},

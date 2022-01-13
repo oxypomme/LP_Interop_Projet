@@ -18,7 +18,8 @@ class Covid
           'date' => $row['date'],
           'hosp' => $row['hosp'],
           'rea' => $row['rea'],
-          'tx_incid' => $row['tx_incid']
+          'tx_incid' => $row['tx_incid'],
+          'incid_dchosp' => $row['incid_dchosp']
         ];
       }
     }
