@@ -14,6 +14,7 @@
   <!-- Render HTML element -->
   <xsl:template match="echeance" mode="render">
     <div>
+      <!-- Getting expired item -->
       <xsl:attribute name="class">
         <xsl:choose>
           <xsl:when test="number(substring(@timestamp, 12, 2)) &lt; number($time)">
@@ -24,6 +25,7 @@
           </xsl:otherwise>
         </xsl:choose>
       </xsl:attribute>
+      <!-- Heure -->
       <div class="meteo--item_time">
         <xsl:value-of select="substring(@timestamp, 6, 11)" />
       </div>
@@ -32,31 +34,37 @@
           <xsl:value-of select="round(temperature/level[@val='2m'] - 273.15)"/>
       </xsl:variable>
       <div>
+        <!-- Setting class & icon in function of value -->
         <xsl:choose>
+          <!-- Very Hot -->
           <xsl:when test="$temperature &gt; 30">
             <xsl:attribute name="class">
               <xsl:value-of select="'meteo--item_temperature t-very-hot'"/>
             </xsl:attribute>
             <i class="fas fa-thermometer-full"></i>
           </xsl:when>
+          <!-- Hot -->
           <xsl:when test="$temperature &gt; 20">
             <xsl:attribute name="class">
               <xsl:value-of select="'meteo--item_temperature t-hot'"/>
             </xsl:attribute>
             <i class="fas fa-thermometer-three-quarters"></i>
           </xsl:when>
+          <!-- Normal -->
           <xsl:when test="$temperature &gt; 10">
             <xsl:attribute name="class">
               <xsl:value-of select="'meteo--item_temperature'"/>
             </xsl:attribute>
             <i class="fas fa-thermometer-half"></i>
           </xsl:when>
+          <!-- Cold -->
           <xsl:when test="$temperature &gt; 0">
             <xsl:attribute name="class">
               <xsl:value-of select="'meteo--item_temperature t-cold'"/>
             </xsl:attribute>
             <i class="fas fa-thermometer-quarter"></i>
           </xsl:when>
+          <!-- Very Cold -->
           <xsl:otherwise>
             <xsl:attribute name="class">
               <xsl:value-of select="'meteo--item_temperature t-very-cold'"/>
@@ -64,14 +72,17 @@
             <i class="fas fa-thermometer-empty"></i>
           </xsl:otherwise>
         </xsl:choose>
+        <!-- Value -->
         <xsl:value-of select="$temperature" />
       </div>
-      <!-- Status -->
+      <!-- Status (Pluie, Soleil, Neige) -->
       <div class="meteo--item_status">
         <xsl:choose>
+          <!-- Pluie -->
           <xsl:when test="pluie &gt; 0">
             <i class="fas fa-cloud-rain"></i>
           </xsl:when>
+          <!-- Soleil -->
           <xsl:otherwise>
             <i class="fas fa-sun"></i>
           </xsl:otherwise>
@@ -86,15 +97,19 @@
       <!-- Humidité -->
       <div>
         <xsl:attribute name="class">
-        <xsl:choose>
+          <!-- Setting class in function of value -->
+          <xsl:choose>
+            <!-- Humide -->
             <xsl:when test="humidite/level &gt; 75">
               <xsl:value-of select="'meteo--item_humid h-humid'"/>
             </xsl:when>
+            <!-- Sec -->
             <xsl:otherwise>
               <xsl:value-of select="'meteo--item_humid'"/>
             </xsl:otherwise>
           </xsl:choose>
         </xsl:attribute>
+        <!-- Value -->
         <i class="fas fa-tint"></i>
         <xsl:value-of select="humidite/level" />
       </div>
@@ -105,13 +120,17 @@
             <xsl:choose>
               <xsl:when test="pluie > 0">
                 <xsl:choose>
+                  <!-- Pluie + Froid -->
                   <xsl:when test="$temperature &lt; 20">Tu dois vraiment sortir ?</xsl:when>
+                  <!-- Pluie + Chaud -->
                   <xsl:otherwise>Sort la veste et prend un parapluie dans le sac.</xsl:otherwise>
                 </xsl:choose>
               </xsl:when>
               <xsl:otherwise>
                   <xsl:choose>
+                    <!-- Soleil + Froid -->
                     <xsl:when test="$temperature &lt; 20">Prend un bonnet... On sait jamais...</xsl:when>
+                    <!-- Soleil + Chaud -->
                     <xsl:otherwise>Fonce !</xsl:otherwise>
                   </xsl:choose>
                 </xsl:otherwise>

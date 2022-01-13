@@ -23,6 +23,7 @@ if (ndlLatLng) {
 // Init graphs
 if (covid) {
 	const datasets = {};
+	// Parse data as datasets
 	for (const day of covid) {
 		for (const [key, value] of Object.entries(day)) {
 			if (value) {
@@ -30,6 +31,7 @@ if (covid) {
 			}
 		}
 	}
+
 	const config = (title) => ({
 		plugins: {
 			legend: {

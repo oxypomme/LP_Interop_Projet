@@ -4,6 +4,15 @@ namespace Biciclette;
 
 class Air
 {
+  /**
+   * Get air quality of today in `$zone`
+   *
+   * @param string $zone The geographic zone concerned
+   * 
+   * @return array Hint about the air quality, label of the air quality and color of the label
+   *
+   * @see https://data-atmograndest.opendata.arcgis.com/datasets/atmograndest::ind-grandest/about
+   */
   static function get(string $zone): array
   {
     $data = (new Request('https://services3.arcgis.com/Is0UwT37raQYl9Jj/arcgis/rest/services/ind_grandest/FeatureServer/0/query', [

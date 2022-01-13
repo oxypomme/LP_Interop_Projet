@@ -4,6 +4,11 @@ namespace Biciclette;
 
 class Velo
 {
+  /**
+   * Get velos stations of Nancy prepare it for maps
+   *
+   * @return array Parsed data
+   */
   static function get(): array
   {
     $data = (new Request('http://www.velostanlib.fr/service/carto'))->fetchXML();
