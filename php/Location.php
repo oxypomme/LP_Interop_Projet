@@ -5,6 +5,15 @@ namespace Biciclette;
 
 class Location
 {
+  /**
+   * Create base request with client IP.
+   * 
+   * @param string $format The format response.
+   * 
+   * @return Request Prepared request
+   * 
+   * @see https://ip-api.com/docs
+   */
   private static function createRequest(string $format): Request
   {
     //! WARN: Dirty, if we're behind a proxy but not in IUT it's will be wrong
@@ -17,6 +26,11 @@ class Location
     ]);
   }
 
+  /**
+   * Get client localisation and parse it as XML.
+   *
+   * @return array Fetched data
+   */
   static function getXML(): array
   {
     $data = self::createRequest('xml')->fetchXML();
@@ -35,6 +49,11 @@ class Location
     }
   }
 
+  /**
+   * Get client localisation and parse it as JSON
+   *
+   * @return array Fetched data
+   */
   static function getJSON(): array
   {
     $data = self::createRequest('json')->fetchJSON();

@@ -4,6 +4,15 @@ namespace Biciclette;
 
 class Meteo
 {
+  /**
+   * Fetch weather data and generate HTML fragement via XSL.
+   *
+   * @param array $latlng Location concerned by weather
+   * 
+   * @return array HTML fragement
+   *
+   * @see https://www.infoclimat.fr/api-previsions-meteo.html?id=2988507&cntry=FR
+   */
   static function get(array $latlng): array
   {
     $data = (new Request('https://www.infoclimat.fr/public-api/gfs/xml', [

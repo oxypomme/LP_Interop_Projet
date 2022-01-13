@@ -23,6 +23,7 @@ if (ndlLatLng) {
 // Init graphs
 if (covid) {
 	const datasets = {};
+	// Parse data as datasets
 	for (const day of covid) {
 		for (const [key, value] of Object.entries(day)) {
 			if (value) {
@@ -30,6 +31,7 @@ if (covid) {
 			}
 		}
 	}
+
 	const config = (title) => ({
 		plugins: {
 			legend: {
@@ -46,7 +48,7 @@ if (covid) {
 	new Chart(document.getElementById("graph-tx_incid"), {
 		type: "line",
 		options: {
-			...config("Taux d'incidence (30 derniers jours)"),
+			...config("Taux d'incidence (pour 100 000 habitants)"),
 			scales: {
 				y: {
 					min: 0,
@@ -62,6 +64,10 @@ if (covid) {
 					backgroundColor: "rgb(0, 125, 255)",
 					borderColor: "rgb(0, 125, 255)",
 				},
+				{
+					label: "Seuil d'alerte",
+					data: datasets.date.map(() => 50),
+				},
 			],
 		},
 	});
@@ -70,9 +76,7 @@ if (covid) {
 	new Chart(document.getElementById("graph-hosp"), {
 		type: "line",
 		options: {
-			...config(
-				"Nombres d'hospitalisations et de réaimations (30 derniers jours)"
-			),
+			...config("Nombres d'hospitalisations et de réaimations"),
 		},
 		data: {
 			labels: datasets.date,
@@ -88,6 +92,12 @@ if (covid) {
 					data: datasets.rea,
 					backgroundColor: "rgb(255, 0, 125)",
 					borderColor: "rgb(255, 0, 125)",
+				},
+				{
+					label: "Nombre de morts (24h)",
+					data: datasets.incid_dchosp,
+					backgroundColor: "rgb(0, 255, 125)",
+					borderColor: "rgb(0, 255, 125)",
 				},
 			],
 		},

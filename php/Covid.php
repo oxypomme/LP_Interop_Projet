@@ -4,6 +4,17 @@ namespace Biciclette;
 
 class Covid
 {
+  /**
+   * Get COVID stats, filter it by departement and prepare it for graphs.
+   *
+   * Due to data size, this request is cached with default expiration (1 day).
+   *
+   * @param string $dep_code The departement of the data
+   * 
+   * @return array Data for graphs + last update
+   * 
+   * @see https://www.data.gouv.fr/fr/datasets/synthese-des-indicateurs-de-suivi-de-lepidemie-covid-19/
+   */
   static function get(string $dep_code): array
   {
     $dep = substr($dep_code, 0, 2);
@@ -13,16 +24,13 @@ class Covid
     foreach ($data['payload']() as $row) {
       if (
         $row['dep'] == $dep
-        // Limit to past month (+ 1 day because we don't have today's data)
-        && \DateTime::createFromFormat('Y-m-d', $row['date']) >= (new \DateTime())->sub(
-          \DateInterval::createFromDateString('1 month + 1 day')
-        )
       ) {
         $res[] = [
           'date' => $row['date'],
           'hosp' => $row['hosp'],
           'rea' => $row['rea'],
-          'tx_incid' => $row['tx_incid']
+          'tx_incid' => $row['tx_incid'],
+          'incid_dchosp' => $row['incid_dchosp']
         ];
       }
     }

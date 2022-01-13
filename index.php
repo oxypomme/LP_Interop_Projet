@@ -2,11 +2,19 @@
 
 require_once __DIR__ . '/vendor/autoload.php';
 
-// Disable warning on prod
+// Disable warnings on prod
 if ($_SERVER['SERVER_NAME'] === 'webetu.iutnc.univ-lorraine.fr') {
   error_reporting(E_ERROR);
 }
 
+/**
+ * Functon to uniform error messages
+ * 
+ * @param string $name Service name who failed
+ * @param Throwable $th Error
+ * 
+ * @return array Type & message
+ */
 function genErrorMessage(string $name, Throwable &$th): array
 {
   $msg = $name . ': ' . $th->getMessage();
@@ -17,6 +25,13 @@ function genErrorMessage(string $name, Throwable &$th): array
   return ['type' => 'error', 'message' => $msg];
 }
 
+/**
+ * Check if `$_SERVER['REQUEST_URI']` match the given `$route`
+ * 
+ * @param string $route Route to check
+ * 
+ * @return bool `true` if match, `else` if not match
+ */
 $uriMatch = fn (string $route) => preg_match("/\/$route(\.php|\/)?/", $_SERVER['REQUEST_URI']);
 
 // Routing

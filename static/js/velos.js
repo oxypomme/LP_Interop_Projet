@@ -14,10 +14,12 @@ if (geoloc) {
 			'&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors',
 	}).addTo(map);
 
+	// Actual position
 	const actMarker = L.marker(geoloc.latlng).addTo(map);
 	actMarker.bindPopup("Position actuelle").openPopup();
 	L.DomUtil.addClass(actMarker._icon, "map--center");
 
+	// IUT position
 	const iutMarker = L.marker([48.68287641100645, 6.161284933811825]).addTo(map);
 	iutMarker.bindPopup("IUT Nancy Charlemagne");
 	L.DomUtil.addClass(iutMarker._icon, "map--iut");

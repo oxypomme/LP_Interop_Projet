@@ -4,13 +4,36 @@ namespace Biciclette;
 
 class Request
 {
+  /**
+   * @var array History of requested URLs
+   */
   public static array $history = [];
 
+  /**
+   * @var string URL of the API
+   */
   private string $url;
+  /**
+   * @var array GET parameters as a associative array
+   */
   private array $query = [];
+  /**
+   * @var bool|string If we cache data, if string it means the duration of the cache
+   */
   private bool|string $cache = false;
+  /**
+   * @var bool If we skip the history writing (usefull for sub requests)
+   */
   private bool $skipHistory = false;
 
+  /**
+   * Prepare HTTP request
+   * 
+   * @param string $url URL of the API
+   * @param array $query GET parameters as a associative array
+   * @param bool|string $cache If we cache data, if `string` it means the duration of the cache
+   * @param bool $skipHistory If we skip the history writing (usefull for sub requests)
+   */
   function __construct(string $url, array $query = [], bool|string $cache = false, bool $skipHistory = false)
   {
     $this->url = $url;
@@ -19,6 +42,11 @@ class Request
     $this->skipHistory = $skipHistory;
   }
 
+  /**
+   * Fetch data using object vars
+   * 
+   * @return array|null Fetched data
+   */
   function fetch(): ?array
   {
     // Parsing query
@@ -27,13 +55,14 @@ class Request
       array_map(
         fn (string $key, ?string $value) =>
         $value && trim($value) ?
-          "$key=" . preg_replace('/\s/', '+', $value) :
+          "$key=" . htmlentities(preg_replace('/\s/', '+', $value)) :
           '',
         array_keys($this->query),
         $this->query
       )
     );
     $url = $this->url . (count($this->query) > 0 ? "?$gparams" : '');
+
     // Setting up proxy for production
     $context = null;
     if ($_SERVER['SERVER_NAME'] === 'webetu.iutnc.univ-lorraine.fr') {
@@ -128,6 +157,11 @@ class Request
     return $data;
   }
 
+  /**
+   * Fetch data and transform it as a asssociative array (via `json_decode`)
+   * 
+   * @return array|null Fetched data
+   */
   function fetchJSON(): ?array
   {
     $data = $this->fetch();
@@ -137,6 +171,11 @@ class Request
     return $data;
   }
 
+  /**
+   * Fetch data and transform it as a XMLDocument
+   * 
+   * @return array|null Fetched data
+   */
   function fetchXML(): ?array
   {
     $data = $this->fetch();
