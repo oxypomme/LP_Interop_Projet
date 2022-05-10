@@ -9,10 +9,10 @@ if ($_SERVER['SERVER_NAME'] === 'webetu.iutnc.univ-lorraine.fr') {
 
 /**
  * Functon to uniform error messages
- * 
+ *
  * @param string $name Service name who failed
  * @param Throwable $th Error
- * 
+ *
  * @return array Type & message
  */
 function genErrorMessage(string $name, Throwable &$th): array
@@ -27,12 +27,12 @@ function genErrorMessage(string $name, Throwable &$th): array
 
 /**
  * Check if `$_SERVER['REQUEST_URI']` match the given `$route`
- * 
+ *
  * @param string $route Route to check
- * 
+ *
  * @return bool `true` if match, `else` if not match
  */
-$uriMatch = fn (string $route) => preg_match("/\/$route(\.php|\/)?/", $_SERVER['REQUEST_URI']);
+$uriMatch = fn (string $route) => preg_match("/\/$route(\.php|\/)?$/", $_SERVER['REQUEST_URI']);
 
 // Routing
 if (preg_match("/\/static\/.+/", $_SERVER['REQUEST_URI'])) {
@@ -54,7 +54,7 @@ if (preg_match("/\/static\/.+/", $_SERVER['REQUEST_URI'])) {
   }
   header('Content-Type: ' . $type);
   exit(file_get_contents(__DIR__ . $_SERVER['REQUEST_URI']));
-} else if ($_SERVER['REQUEST_URI'] == '/' || $uriMatch('velo')) {
+} else if ($uriMatch('') || $uriMatch('velo')) {
   exit(require './velo.php');
 } else if ($uriMatch('circulations')) {
   exit(require './circulations.php');

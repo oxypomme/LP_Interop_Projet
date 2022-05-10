@@ -153,8 +153,13 @@
         or $datetime=concat($date, ' 13:00')
         or $datetime=concat($date, ' 16:00')
         or $datetime=concat($date, ' 19:00')
+        or $datetime=concat($date, ' 05:00')
+        or $datetime=concat($date, ' 08:00')
+        or $datetime=concat($date, ' 14:00')
+        or $datetime=concat($date, ' 17:00')
+        or $datetime=concat($date, ' 20:00')
       ">
-        <xsl:apply-templates select="." mode="render" /> 
+        <xsl:apply-templates select="." mode="render" />
       </xsl:when>
     </xsl:choose>
   </xsl:template>
